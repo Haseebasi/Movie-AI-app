@@ -14,28 +14,28 @@
             <img class="logo-img" src="images/logo.png">
             <h1 class="header-text">PopChoice</h1>
         </header>
-        <main>
+        <main id="main">
             <form id="qn">
                 <section class="form-section">
                     <label>What&apos;s your favorite movie and why?</label>
-                    <textarea class="q1" placeholder="The Shawshank Redemption
-Because it taught me to never give up hope no matter how hard life gets"></textarea>
+                    <textarea class="q1" id="q1" placeholder="The Shawshank Redemption
+Because it taught me to never give up hope no matter how hard life gets" required></textarea>
                 </section>
                 <section class="form-section">
                     <label>Are you in the mood for something
 new or a classic?</label>
-                    <textarea class="q2" placeholder="I want to watch movies that were released after 1990"></textarea>
+                    <textarea class="q2" id="q2" placeholder="I want to watch movies that were released after 1990" required></textarea>
                 </section>
                 <section class="form-section">
                     <label>Do you wanna have fun or do you want something serious?</label>
-                    <textarea class="q3" placeholder="I want to watch something stupid and fun"></textarea>
+                    <textarea class="q3" id="q3" placeholder="I want to watch something stupid and fun" required></textarea>
                 </section>
                 <button type="submit">Let&apos;s Go</button>
             </form>
-            <section class="movie-details hide">
-                <h2>School of Rock (2009)</h2>
-                <p>A fun and stupid movie about a wannabe rocker turned fraud substitute teacher forming a rock band with his students to win the Battle of the Bands</p>
-                <button>Go Again</button>
+            <section class="movie-details hide" id="movie-details">
+                <h2 id="movie-title">School of Rock (2009)</h2>
+                <p id="movie-desc">A fun and stupid movie about a wannabe rocker turned fraud substitute teacher forming a rock band with his students to win the Battle of the Bands</p>
+                <button id="main-btn">Go Again</button>
             </section>
         </main>
     </body>
