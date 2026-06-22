@@ -1,0 +1,85 @@
+*,*::after,*::before{
+    box-sizing: border-box;
+}
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: "Roboto Slab", serif;
+    background-color: #000C36;
+    color:white;
+}
+
+header{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 3em;
+}
+.logo-img{
+    width: 20%;
+}
+.header-text{
+    color:white;
+    font-family: "Carter One", system-ui;
+    font-size: 3rem;
+}
+
+
+
+
+main{
+    padding:0 2.8125em;
+    margin-bottom: 3.125em;
+}
+.form-section{
+    margin-bottom: 25px;
+}
+textarea{
+    background-color: #3B4877;
+    border-radius: 5px;
+    border: none;
+    resize: none;
+    width: 100%;
+    color: #05060C;
+    field-sizing: content;
+    line-height: 1.4;
+    padding: 10px;
+
+}
+textarea:focus,
+textarea:hover{
+color: white;
+}
+label{
+    display: block;
+}
+button{
+    width: 100%;
+    margin:25px 0;
+    font-weight: 600;
+    font-size:30px;
+    padding: 0.5em;
+    border-radius: 10px;
+    border: none;
+    background-color: #2CB967;
+    color: #000C36;
+    cursor: pointer;
+}
+button:hover,
+button:focus{
+    background-color: #1B5E34;
+    color: #E6EDFF;
+}
+
+
+
+h2{
+    text-align: center;
+}
+
+
+
+.hide{
+    display: none;
+}
