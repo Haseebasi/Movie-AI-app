@@ -1,11 +1,19 @@
 import { openai, supabase } from './config.js';
 import movies from './content.js';
 
+
+
+
+// ==================================
+// Global variables
+// ==================================
 const main = document.getElementById("main")
 const questionForm = document.getElementById("qn")
 const movieDetails = document.getElementById("movie-details")
 const movieTitle = document.getElementById("movie-title")
 const movieDescription = document.getElementById("movie-desc")
+
+//messages array for chat API
 const chatMessages = [{
     role: 'system',
     content: `You are an expert AI Movie Concierge. Your sole task is to explain exactly WHY a specific movie suggestion perfectly matches a user's preferences based on their answers to three profiling questions.
@@ -26,10 +34,13 @@ reply nothing if you dont know anything`
 }];
 
 
+
+//inputting of movies array items to supabase vector database
+
 const inputArray = movies.map(movie => JSON.stringify(movie));
 const data = await Promise.all(
     inputArray.map( async (textChunk) => {
-        const embeddingResponse = createEmbedding(textChunk)
+        const embeddingResponse =await createEmbedding(textChunk)
         return { 
           content: textChunk, 
           embedding: embeddingResponse 
@@ -42,7 +53,7 @@ const data = await Promise.all(
 
 
 
-
+//function to create embedding
 async function createEmbedding(input){
     const response = await openai.embeddings.create({
     model: "text-embedding-ada-002",
@@ -52,7 +63,7 @@ async function createEmbedding(input){
 }
 
 
-
+//function to create ai message according to the suggestion and query
 async function getAiMessage(text, query) {
   chatMessages.push({
     role: 'user',
@@ -67,42 +78,66 @@ async function getAiMessage(text, query) {
   });
   return choices[0].message.content;
 }
-async function searchRender(embedding) {
+
+
+// function to search for the suggestion and rendering the ai reply to the html
+async function searchRender(query,embedding) {
     const { data } = await supabase.rpc('match_movies', {
     query_embedding: embedding,
     match_threshold: 0.50,
     match_count: 1
     });
-    let suggestion = data[0].content
-    if (suggestion){
-        const aiReply = getAiMessage(suggestion,query)
+    
+    if (data && data.length > 0){
+        let suggestion = data[0].content
+        const aiReply =await getAiMessage(suggestion,query)
         suggestion = JSON.parse(suggestion)
         movieDetails.innerHTML = `<h2>${suggestion.title}(${suggestion.releaseYear})</h2>
-        <p>${aiReply}</p>`
+        <p>${aiReply}</p>
+        <button id="main-btn">Go Again</button>`
 
+    }else {
+        movieDetails.innerHTML = `<p>No matching movies found. Try adjusting your preferences!</p>
+        <button id="main-btn">Go Again</button>`;
     }
 }
 
 
 
-document.addEventListener('submit',function(e){
+
+//form submit event listener
+
+document.addEventListener('submit',async function(e){
     e.preventDefault()
     // console.log(document.getElementById('q1').value)
     // console.log(document.getElementById('q2').value)
     // console.log(document.getElementById('q3').value)
-    const query = document.getElementById('q1').value + " " + document.getElementById('q2').value + " " + document.getElementById('q3').value
-    const embedding = createEmbedding(query)
-    searchRender(embedding)
+    const query = document.getElementById('q1').value + " " +
+        document.getElementById('q2').value + " " +
+        document.getElementById('q3').value
+    questionForm.classList.add("hide")
+    movieDetails.classList.remove("hide")
+    try{
+    const embedding =await createEmbedding(query)
+    await searchRender(query,embedding)
+    }catch (err) {
+        console.error("Error fetching recommendation:", err);
+        movieDetails.innerHTML = `<p>Something went wrong. Please try again.</p>
+        <button id="main-btn">Go Again</button>`;
+    }
     
 
-    questionForm.classList.toggle("hide")
-    movieDetails.classList.remove("hide")
+    
     
 })
+
+
+
+//try again button listener
 document.addEventListener('click',function(e){
     
     if(e.target.id === "main-btn"){
-        questionForm.classList.toggle("hide")
+        questionForm.classList.remove("hide")
         document.getElementById("movie-details").classList.add("hide")
         questionForm.reset()
     }

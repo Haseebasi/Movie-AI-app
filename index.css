@@ -8,7 +8,14 @@ html, body {
     background-color: #000C36;
     color:white;
 }
+h2{
+    text-align: center;
+}
 
+
+/* ==========================================
+            header styling
+============================================= */
 header{
     display: flex;
     flex-direction: column;
@@ -27,7 +34,9 @@ header{
 
 
 
-
+/* ==========================================
+            main styling
+============================================= */
 main{
     padding:0 2.8125em;
     margin-bottom: 3.125em;
@@ -74,12 +83,12 @@ button:focus{
 
 
 
-h2{
-    text-align: center;
-}
 
 
 
+/* ==========================================
+            style for hide elements
+============================================= */
 .hide{
     display: none;
 }
